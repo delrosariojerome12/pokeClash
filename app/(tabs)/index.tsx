@@ -1,38 +1,17 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import { PokemonClient } from "pokenode-ts";
+import React from "react";
+import { Text, View } from "@components/Themed";
+import { StyleSheet } from "react-native";
+import { useMasterDexHooks } from "@hooks/masterDex/masterDexHooks";
 
 const MasterDex = () => {
-  console.log("do fetching?");
+  console.log("master dex screen");
 
-  const [names, setNames] = useState<any[]>([]);
-
-  const getSome = async () => {
-    const api = new PokemonClient();
-
-    await api
-      .listPokemons(0, 10)
-      .then((res) => {
-        console.log("here", res);
-        setNames(res.results as any);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    getSome();
-  }, []);
+  const { renderMasterList } = useMasterDexHooks();
 
   return (
-    <View>
+    <View style={{ flex: 1, padding: 10 }}>
       <Text>MasterDex</Text>
-
-      {names.length > 0 &&
-        names.map((item) => {
-          return <Text>{item.name}</Text>;
-        })}
+      {renderMasterList()}
     </View>
   );
 };
